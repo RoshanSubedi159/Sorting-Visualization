@@ -7,7 +7,7 @@ Node::Node(float x, float y, float width, float height,
 	this->nodeShape = new sf::RectangleShape;
 	this->nodeShape->setPosition(sf::Vector2f(x, y));
 	this->nodeShape->setSize(sf::Vector2f(width, height*data));
-	this->nodeShape->setOutlineColor(sf::Color::White);
+	this->nodeShape->setOutlineColor(sf::Color(0, 76, 153));
 	this->nodeShape->setOutlineThickness(2.0f);
 	this->width = width;
 	this->height = height;
@@ -17,14 +17,14 @@ Node::Node(float x, float y, float width, float height,
 	this->text->setFont(font);
 	this->text->setString(std::to_string(int(data)));
 	this->text->setFillColor(sf::Color::Black);
-	this->text->setCharacterSize(23);
+	this->text->setCharacterSize(35);
 	
 	this->text->setPosition
 	(
 		sf::Vector2f(this->nodeShape->getPosition().x+this->nodeShape->getGlobalBounds().width * (1.f / 4.f), 0.f)
 	);
 
-	this->nodeShape->setFillColor(sf::Color::Red);
+	this->nodeShape->setFillColor(sf::Color(255, 153, 51));
 }
 
 //Destructor Definition

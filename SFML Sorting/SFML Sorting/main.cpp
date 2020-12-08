@@ -6,12 +6,17 @@
 #include "Button.h"
 
 //Constant for Node Change Speed
-#define SPEED (500)
+#define SPEED (70)
+
+
+bool check = false;
+
 
 //Function to draw and display the all the Nodes
 void renderNodes(Node *nodes[], int nodeCount, sf::RenderWindow &window)
 {
-	window.clear(sf::Color::White);
+	//Sorting Window Background Color
+	window.clear(sf::Color(204,229,255));
 	for (int i = 0; i < nodeCount; i++)
 	{
 		sf::RectangleShape *rectangle = nodes[i]->getShape();
@@ -19,6 +24,23 @@ void renderNodes(Node *nodes[], int nodeCount, sf::RenderWindow &window)
 		window.draw(*rectangle);
 		window.draw(*nodeValue);
 	}
+
+
+	//Label Dispaly
+	sf::Font fontl;
+	fontl.loadFromFile("Arial.ttf");
+	sf::Text messagel;
+	messagel.setFont(fontl);
+	if(check==true)
+		messagel.setString("Label:	Orange = Unsorted Bar	Light Yelow = Current Bar	Blue = Sorted Bar	Green = Current Min. Bar");
+	else
+		messagel.setString("Label:	Orange = Unsorted Bar	Light Yelow = Current Bar	Blue = Sorted Bar	");
+	messagel.setFillColor(sf::Color(0, 52, 102));
+	messagel.setCharacterSize(30);
+	messagel.setPosition(sf::Vector2f(10.f, window.getSize().y - 70.f));
+	window.draw(messagel);
+
+
 	window.display();
 }
 
@@ -48,9 +70,9 @@ void swapNumbers(int* a, int i, int j)
 void BubbleSort(int *a,Node *nodes[],int nodeCount, sf::RenderWindow &window)
 {
 
-	// Cyan == Sorted Node
-	// Yellow == Current Node
-	// ::Red == Unsorted Node
+	// Color(0,102,204)		::Bluish == Sorted Node
+	// Color(255,255,153)	::Yellowish == Current Node
+	// Color(255,153,51)	::Orangish == Unsorted Node
 
 	bool swapped;
 
@@ -64,9 +86,9 @@ void BubbleSort(int *a,Node *nodes[],int nodeCount, sf::RenderWindow &window)
 		swapped = true;
 		for (int j = 0; j < nodeCount - i - 1; j++)
 		{
-			//Shows nodes being compa::Red
-			nodes[j]->changeNodeColor(sf::Color::Yellow);
-			nodes[j + 1]->changeNodeColor(sf::Color::Yellow);
+			//Shows nodes being compared
+			nodes[j]->changeNodeColor(sf::Color(255,255,153));
+			nodes[j + 1]->changeNodeColor(sf::Color(255,255,153));
 			renderNodes(nodes, nodeCount, window);
 			Sleep(SPEED);
 
@@ -81,26 +103,26 @@ void BubbleSort(int *a,Node *nodes[],int nodeCount, sf::RenderWindow &window)
 
 			renderNodes(nodes, nodeCount, window);
 			Sleep(SPEED);
-			nodes[j]->changeNodeColor(sf::Color::Red);
-			nodes[j + 1]->changeNodeColor(sf::Color::Red);
+			nodes[j]->changeNodeColor(sf::Color(255,153,51));
+			nodes[j + 1]->changeNodeColor(sf::Color(255,153,51));
 		}
-		nodes[nodeCount - 1 - i]->changeNodeColor(sf::Color::Red);
+		nodes[nodeCount - 1 - i]->changeNodeColor(sf::Color(255,153,51));
 
 		//Changing the sorted nodes color
 		if (swapped == true)
 		{
 			for (int i = 0; i < nodeCount; i++)
-				nodes[i]->changeNodeColor(sf::Color::Cyan);
+				nodes[i]->changeNodeColor(sf::Color(0,102,204));
 			renderNodes(nodes, nodeCount, window);
 			Sleep(SPEED);
 			break;
 		}
-		nodes[nodeCount-i-1]->changeNodeColor(sf::Color::Cyan);
+		nodes[nodeCount-i-1]->changeNodeColor(sf::Color(0,102,204));
 		renderNodes(nodes, nodeCount, window);
 	}
 
 	for (int k = 0; k < nodeCount; k++)
-		nodes[k]->changeNodeColor(sf::Color::Cyan);
+		nodes[k]->changeNodeColor(sf::Color(0,102,204));
 	renderNodes(nodes, nodeCount, window);
 	Sleep(SPEED);
 
@@ -112,8 +134,8 @@ void BubbleSort(int *a,Node *nodes[],int nodeCount, sf::RenderWindow &window)
 	message.setFont(font);
 	message.setString("The array is Sorted using BubbleSort.");
 	message.setFillColor(sf::Color::Red);
-	message.setCharacterSize(50);
-	message.setPosition(sf::Vector2f(100, 600));
+	message.setCharacterSize(100);
+	message.setPosition(sf::Vector2f(100,window.getSize().y*(3.f/4.f)));
 
 	window.draw(message);
 	window.display();
@@ -125,9 +147,9 @@ void BubbleSort(int *a,Node *nodes[],int nodeCount, sf::RenderWindow &window)
 
 void InsertionSort(int* numbers, Node* nodes[], int nodeCount, sf::RenderWindow& window)
 {
-	// Cyan == Sorted Node
-	// Yellow == Current Node
-	// ::Red == Unsorted Node
+	// Color(0,102,204)		::Bluish == Sorted Node
+	// Color(255,255,153)	::Yellowish == Current Node
+	// Color(255,153,51)	::Orangish == Unsorted Node
 
 	//Displaying Initial Array
 	renderNodes(nodes, nodeCount, window);
@@ -137,7 +159,7 @@ void InsertionSort(int* numbers, Node* nodes[], int nodeCount, sf::RenderWindow&
 	for(int i = 0 ; i < nodeCount ; i++ )
 	{
 		//Showing the selected node
-		nodes[i]->changeNodeColor(sf::Color::Yellow);
+		nodes[i]->changeNodeColor(sf::Color(255,255,153));
 		renderNodes(nodes, nodeCount, window);
 		Sleep(SPEED);
 
@@ -148,21 +170,21 @@ void InsertionSort(int* numbers, Node* nodes[], int nodeCount, sf::RenderWindow&
 				swapNumbers(numbers, j - 1, j);
 				nodes[j]->setNode(numbers[j]);
 				nodes[j - 1]->setNode(numbers[j - 1]);
-				nodes[j - 1]->changeNodeColor(sf::Color::Yellow);
-				nodes[j]->changeNodeColor(sf::Color::Cyan);
+				nodes[j - 1]->changeNodeColor(sf::Color(255,255,153));
+				nodes[j]->changeNodeColor(sf::Color(0,102,204));
 				renderNodes(nodes, nodeCount, window);
 				Sleep(SPEED);
 			}	
 		}
 		//Changing sorted node color
 		for(int k = 0 ; k <= i ; k++ )
-			nodes[k]->changeNodeColor(sf::Color::Cyan);
+			nodes[k]->changeNodeColor(sf::Color(0,102,204));
 		renderNodes(nodes, nodeCount, window);
 		Sleep(SPEED);
 	}
 	//Changing the sorted node color
 	for (int k = 0; k < nodeCount; k++)
-		nodes[k]->changeNodeColor(sf::Color::Cyan);
+		nodes[k]->changeNodeColor(sf::Color(0,102,204));
 	renderNodes(nodes, nodeCount, window);
 
 
@@ -173,8 +195,8 @@ void InsertionSort(int* numbers, Node* nodes[], int nodeCount, sf::RenderWindow&
 	message.setFont(font);
 	message.setString("The array is Sorted using InsertionSort.");
 	message.setFillColor(sf::Color::Red);
-	message.setCharacterSize(50);
-	message.setPosition(sf::Vector2f(100, 600));
+	message.setCharacterSize(100);
+	message.setPosition(sf::Vector2f(100, window.getSize().y * (3.f / 4.f)));
 
 	window.draw(message);
 	window.display();
@@ -186,14 +208,18 @@ void InsertionSort(int* numbers, Node* nodes[], int nodeCount, sf::RenderWindow&
 
 void SelectionSort(int* a, Node* nodes[], int nodeCount, sf::RenderWindow& window)
 {
-	//Yellow == Current Node
-	//Cyan == Sorted Node
-	//Blue == Current Minimum
-	//::Red == Unsorted Node
+	// Color(0,102,204)		::Bluish == Sorted Node
+	// Color(255,255,153)	::Yellowish == Current Node
+	// Color(255,153,51)	::Orangish == Unsorted Node
+	//Color(178,255,102) == Current Minimum
+	
+	
 
 	//Displaying Initial Array
 	renderNodes(nodes, nodeCount, window);
+
 	Sleep(SPEED);
+
 	
 	//Sorting Loop
 	for (int i = 0; i < nodeCount; i++)
@@ -203,31 +229,31 @@ void SelectionSort(int* a, Node* nodes[], int nodeCount, sf::RenderWindow& windo
 		for (int j = i; j < nodeCount; j++)
 		{
 			//Changing Selected Node color
-			nodes[j]->changeNodeColor(sf::Color::Yellow);
+			nodes[j]->changeNodeColor(sf::Color(255,255,153));
 			renderNodes(nodes, nodeCount, window);
 			Sleep(SPEED);
 
 			//Selecting the minimum node
 			if (j == i)
 			{
-				nodes[j]->changeNodeColor(sf::Color::Blue);
+				nodes[j]->changeNodeColor(sf::Color(178, 255, 102));
 				renderNodes(nodes, nodeCount, window);
 				Sleep(SPEED);
 			}
 			else if (a[j] <= min)
 			{
-				nodes[minIndex]->changeNodeColor(sf::Color::Red);
+				nodes[minIndex]->changeNodeColor(sf::Color(255,153,51));
 				renderNodes(nodes, nodeCount, window);
 				Sleep(SPEED);
 				minIndex = j;
 				min = a[j];
-				nodes[minIndex]->changeNodeColor(sf::Color::Blue);
+				nodes[minIndex]->changeNodeColor(sf::Color(178, 255, 102));
 				renderNodes(nodes, nodeCount, window);
 				Sleep(SPEED);
 			}
 			else
 			{
-				nodes[j]->changeNodeColor(sf::Color::Red);
+				nodes[j]->changeNodeColor(sf::Color(255,153,51));
 				renderNodes(nodes, nodeCount, window);
 			}
 		}
@@ -236,16 +262,17 @@ void SelectionSort(int* a, Node* nodes[], int nodeCount, sf::RenderWindow& windo
 		swapNumbers(a, i, minIndex);
 		nodes[i]->setNode(a[i]);
 		nodes[minIndex]->setNode(a[minIndex]);
-		nodes[minIndex]->changeNodeColor(sf::Color::Red);
+		nodes[minIndex]->changeNodeColor(sf::Color(255,153,51));
 
 		//Changing sorted node color
-		nodes[i]->changeNodeColor(sf::Color::Cyan);
+		nodes[i]->changeNodeColor(sf::Color(0,102,204));
 		renderNodes(nodes, nodeCount, window);
 	}
 
 	//Changing sorted node color
-	nodes[nodeCount - 1]->changeNodeColor(sf::Color::Cyan);
+	nodes[nodeCount - 1]->changeNodeColor(sf::Color(0,102,204));
 	renderNodes(nodes, nodeCount, window);
+
 
 	//Displaying message after the sorting is completed
 	sf::Font font;
@@ -254,8 +281,8 @@ void SelectionSort(int* a, Node* nodes[], int nodeCount, sf::RenderWindow& windo
 	message.setFont(font);
 	message.setString("The array is Sorted using Selection Sort.");
 	message.setFillColor(sf::Color::Red);
-	message.setCharacterSize(50);
-	message.setPosition(sf::Vector2f(100, 600));
+	message.setCharacterSize(100);
+	message.setPosition(sf::Vector2f(100, window.getSize().y * (3.f / 4.f)));
 
 	window.draw(message);
 	window.display();
@@ -267,8 +294,8 @@ void SelectionSort(int* a, Node* nodes[], int nodeCount, sf::RenderWindow& windo
 void sortingWindow(std::string title,int a)
 {
 
-	//Requi::Red variables
-	const int nodeCount = 10 ;
+	//Required variables
+	const int nodeCount = 25 ;
 	Node* nodes[nodeCount];
 	int numbers[nodeCount];
 
@@ -277,12 +304,12 @@ void sortingWindow(std::string title,int a)
 
 
 	//Rendering the window to display sorting animation
-	sf::RenderWindow window(sf::VideoMode(1280, 720), title, sf::Style::Titlebar);
+	sf::RenderWindow window(sf::VideoMode(1620, 920), title, sf::Style::Titlebar);
 	window.setFramerateLimit(60);
 
 	//node width and height per single value
 	float node_width = ((window.getSize().x) / (nodeCount));
-	float node_height = ((window.getSize().y) / 100.f);
+	float node_height = ((window.getSize().y-100.f) / 100.f);
 
 
 	//Creating all the nodes as bars
@@ -303,16 +330,19 @@ void sortingWindow(std::string title,int a)
 			//Deciding whish sorting algorithm to apply and closing the window after the sorting is completed
 			if (a == 1)
 			{
+				check = false;
 				BubbleSort(numbers, nodes, nodeCount, window);
 				window.close();
 			}
 			else if (a == 2)
 			{
+				check = false;
 				InsertionSort(numbers, nodes, nodeCount, window);
 				window.close();
 			}
 			else if (a == 3)
 			{
+				check = true;
 				SelectionSort(numbers, nodes, nodeCount, window);
 				window.close();
 			}
@@ -343,7 +373,7 @@ int main()
 	texture.loadFromFile("sorting_image.png");
 	photo.setTexture(&texture);
 
-	//Declaring the requi::Red buttons
+	//Declaring the required buttons
 	Button* btn[4];
 
 	//Bubble Sort Button
